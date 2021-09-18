@@ -1,0 +1,8 @@
+name: CakeTNT
+version: '${project.version}'
+main: dev.jdsgames.caketnt.CakeTNT
+api-version: 1.17
+prefix: CakeTNT
+authors: [ Jdsgames ]
+description: Craftable Cake Explosives
+website: https://www.jdsgames.dev/
