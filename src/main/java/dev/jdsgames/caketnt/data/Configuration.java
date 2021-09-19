@@ -44,6 +44,17 @@ public class Configuration
     // Set the Enabled World List
     public void setWorldList(HashMap<World, Boolean> worldList) { this.worldList = worldList;}
 
+    // Get World Enabled Status
+    public boolean getWorldEnabledStatus(World world)
+    {
+        if(worldList.containsKey(world))
+        {
+            return worldList.get(world);
+        }
+
+        return false;
+    }
+
     // Toggle World Enabled Status
     public void toggleWorldEnabledStatus(World world)
     {

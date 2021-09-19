@@ -2,14 +2,17 @@ package dev.jdsgames.caketnt.commands;
 
 import dev.jdsgames.caketnt.CakeTNT;
 import dev.jdsgames.caketnt.data.Configuration;
+import dev.jdsgames.caketnt.utility.CakeUtility;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
-public class CakeConfiguration implements CommandExecutor
+public class CakeConfigurationCMD implements CommandExecutor
 {
     // Basic use of the command /caketntconfig
     private final Permission USE_CONFIGURATION = new Permission("dev.jdsgames.caketnt.config.use");
@@ -22,7 +25,6 @@ public class CakeConfiguration implements CommandExecutor
 
     // Plugin Config
     Configuration pluginConfig;
-
 
     // Command Handler
     @Override
@@ -37,7 +39,7 @@ public class CakeConfiguration implements CommandExecutor
             Player sendingPlayer = (Player) sender;
 
             // If the player can use the configuration command
-            if(!hasConfigurationPermission(sendingPlayer, USE_CONFIGURATION)) return false;
+            if(!CakeUtility.hasPermissionWithError(sendingPlayer, USE_CONFIGURATION)) return false;
 
             switch(label)
             {
@@ -56,20 +58,10 @@ public class CakeConfiguration implements CommandExecutor
         return false;
     }
 
-    // Check if the player has a particular permission if not let them know!
-    private boolean hasConfigurationPermission(Player player, Permission permission)
-    {
-        if(player.hasPermission(permission))
-            return true;
-
-        player.sendMessage(ChatColor.RED + "You require permission: " + permission.getName());
-        return false;
-    }
-
     // Display Help Menu
     private void displayHelpMenu(Player player)
     {
-        if(hasConfigurationPermission(player, USE_CONFIGURATION_HELP))
+        if(CakeUtility.hasPermissionWithError(player, USE_CONFIGURATION_HELP))
         {
             player.sendMessage(ChatColor.GOLD + "- - - - - Cake TNT - - - - - Configuration Menu - - - - -");
             player.sendMessage(ChatColor.GRAY + " /caketntconfig help: :: Display Help Menu to the Player ");
@@ -81,7 +73,7 @@ public class CakeConfiguration implements CommandExecutor
     // Toggle Enabled Status
     private void toggleEnable(Player player)
     {
-        if(hasConfigurationPermission(player, SET_CONFIGURATION_IS_ENABLED))
+        if(CakeUtility.hasPermissionWithError(player, SET_CONFIGURATION_IS_ENABLED))
         {
             pluginConfig.toggleIsPluginEnabled();
         }
@@ -90,9 +82,23 @@ public class CakeConfiguration implements CommandExecutor
     // Toggle World Status
     private void toggleWorld(Player player, String[] strings)
     {
-        if(hasConfigurationPermission(player, SET_CONFIGURATION_IS_WORLD_ENABLED))
+        if(CakeUtility.hasPermissionWithError(player, SET_CONFIGURATION_IS_WORLD_ENABLED))
         {
-            // TODO
+            World toggleWorld = Bukkit.getWorld(strings[0]);
+
+            if(toggleWorld != null)
+            {
+                // Toggle World
+                pluginConfig.toggleWorldEnabledStatus(toggleWorld);
+                // Alert Player of Change
+                player.sendMessage(ChatColor.GOLD + toggleWorld.getName() +
+                                   ChatColor.GRAY + " has been toggled to: " + pluginConfig.getWorldEnabledStatus(toggleWorld));
+                return;
+            }
+            else
+                // Warn the user that the command failed due to a null world
+                player.sendMessage(ChatColor.RED + strings[0] + " is not a valid World!");
         }
+
     }
 }
