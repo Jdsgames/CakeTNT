@@ -1,8 +1,8 @@
-package dev.jdsgames.caketnt.data;
+package dev.jdsgames.caketnt.items;
 
 import org.bukkit.permissions.Permission;
 
-public class ItemCakeTNT
+public abstract class AbstractCakeTNT
 {
     private final Permission PLACE_CAKETNT = new Permission("dev.jdsgames.caketnt.place.caketnt");
 

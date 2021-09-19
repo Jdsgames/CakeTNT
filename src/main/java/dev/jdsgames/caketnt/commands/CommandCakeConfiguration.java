@@ -1,6 +1,6 @@
 package dev.jdsgames.caketnt.commands;
 
-import dev.jdsgames.caketnt.CakeTNT;
+import dev.jdsgames.caketnt.PluginCakeTNT;
 import dev.jdsgames.caketnt.data.Configuration;
 import dev.jdsgames.caketnt.utility.CakeUtility;
 import org.bukkit.Bukkit;
@@ -12,12 +12,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
-public class CakeConfigurationCMD implements CommandExecutor
+public class CommandCakeConfiguration implements CommandExecutor
 {
     // Basic use of the command /caketntconfig
     private final Permission USE_CONFIGURATION = new Permission("dev.jdsgames.caketnt.config.use");
     // Use of the command /caketntconfig help - Display a help menu for the configuration
     private final Permission USE_CONFIGURATION_HELP = new Permission("dev.jdsgames.caketnt.config.use.help");
+    // Use of the command /caketntconfig liststatus - List a status of a particular world
+    private final Permission USE_LIST_WORLD_STATUS = new Permission("dev.jdsgames.caketnt.config.use.liststatus");
     // Use of the command /caketntconfig toggleplugin - Toggle's the enabled state of the plugin
     private final Permission SET_CONFIGURATION_IS_ENABLED = new Permission("dev.jdsgames.caketnt.config.set.isenabled");
     // Use of the command /caketntconfig toggleworld <world> - Toggle the enabled status of a world
@@ -31,7 +33,7 @@ public class CakeConfigurationCMD implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         // Plugin Configuration
-        pluginConfig = CakeTNT.getCakeConfiguration();
+        pluginConfig = PluginCakeTNT.getCakeConfiguration();
 
         // If the command sender was a player
         if(sender instanceof Player)
@@ -45,6 +47,9 @@ public class CakeConfigurationCMD implements CommandExecutor
             {
                 case "toggleplugin":
                     toggleEnable(sendingPlayer);
+                    break;
+                case "liststatus":
+                    toggleWorld(sendingPlayer, args);
                     break;
                 case "toggleworld":
                     toggleWorld(sendingPlayer, args);
@@ -79,6 +84,23 @@ public class CakeConfigurationCMD implements CommandExecutor
         }
     }
 
+    // List World Status
+    private void listWorldStatus(Player player, String[] strings)
+    {
+        if(CakeUtility.hasPermissionWithError(player, USE_LIST_WORLD_STATUS))
+        {
+            World listWorld = Bukkit.getWorld(strings[0]);
+
+            if(listWorld != null)
+            {
+                // Alert Player of Status
+                player.sendMessage(ChatColor.GOLD + listWorld.getName() +
+                                   ChatColor.GRAY + " CakeTNT status: " + pluginConfig.getWorldEnabledStatus(listWorld
+                ));
+            }
+        }
+    }
+
     // Toggle World Status
     private void toggleWorld(Player player, String[] strings)
     {
@@ -93,7 +115,6 @@ public class CakeConfigurationCMD implements CommandExecutor
                 // Alert Player of Change
                 player.sendMessage(ChatColor.GOLD + toggleWorld.getName() +
                                    ChatColor.GRAY + " has been toggled to: " + pluginConfig.getWorldEnabledStatus(toggleWorld));
-                return;
             }
             else
                 // Warn the user that the command failed due to a null world
