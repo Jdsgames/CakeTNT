@@ -4,10 +4,10 @@ import org.bukkit.World;
 
 import java.util.HashMap;
 
-public class Configuration
+public class CakeConfiguration
 {
     // Configuration Instance
-    private static Configuration configuration;
+    private static CakeConfiguration cakeConfiguration;
 
     // Is the plugin enabled?
     private boolean isPluginEnabled;
@@ -16,20 +16,20 @@ public class Configuration
     private HashMap<World, Boolean> worldList;
 
     // Constructor
-    private Configuration()
+    private CakeConfiguration()
     {
         // Set Default Values
         isPluginEnabled = true;
     }
 
     // Get Configuration Instance
-    public static Configuration getConfiguration()
+    public static CakeConfiguration getConfiguration()
     {
         // Create configuration instance if it is not already created.
-        if(configuration == null)
-            configuration = new Configuration();
+        if(cakeConfiguration == null)
+            cakeConfiguration = new CakeConfiguration();
 
-        return configuration;
+        return cakeConfiguration;
     }
 
     // Is the Plugin Enabled?

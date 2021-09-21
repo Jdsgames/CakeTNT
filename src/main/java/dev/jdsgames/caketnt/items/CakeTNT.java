@@ -1,4 +1,4 @@
 package dev.jdsgames.caketnt.items;
 
-public class CakeTNT {
+public class CakeTNT extends AbstractCakeTNT{
 }

@@ -1,6 +1,6 @@
 package dev.jdsgames.caketnt;
 
-import dev.jdsgames.caketnt.data.Configuration;
+import dev.jdsgames.caketnt.data.CakeConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PluginCakeTNT extends JavaPlugin
@@ -9,7 +9,7 @@ public final class PluginCakeTNT extends JavaPlugin
     private static PluginCakeTNT pluginCakeTnt;
 
     // Configuration Instance
-    private static Configuration cakeConfiguration;
+    private static CakeConfiguration cakeConfiguration;
 
     @Override
     public void onEnable()
@@ -18,7 +18,7 @@ public final class PluginCakeTNT extends JavaPlugin
         pluginCakeTnt = this;
 
         // Get Cake Configuration
-        cakeConfiguration = Configuration.getConfiguration();
+        cakeConfiguration = CakeConfiguration.getConfiguration();
 
 
         // Register Plugin Commands
@@ -38,7 +38,7 @@ public final class PluginCakeTNT extends JavaPlugin
     public static PluginCakeTNT getPluginInstance() { return pluginCakeTnt; }
 
     // Get Configuration Instance
-    public static Configuration getCakeConfiguration() { return cakeConfiguration; }
+    public static CakeConfiguration getCakeConfiguration() { return cakeConfiguration; }
 
     // Register Commands
     private void registerCommands()

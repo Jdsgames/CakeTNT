@@ -1,7 +1,7 @@
 package dev.jdsgames.caketnt.commands;
 
 import dev.jdsgames.caketnt.PluginCakeTNT;
-import dev.jdsgames.caketnt.data.Configuration;
+import dev.jdsgames.caketnt.data.CakeConfiguration;
 import dev.jdsgames.caketnt.utility.CakeUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,7 +26,7 @@ public class CommandCakeConfiguration implements CommandExecutor
     private final Permission SET_CONFIGURATION_IS_WORLD_ENABLED = new Permission("dev.jdsgames.caketnt.config.set.worldenabled");
 
     // Plugin Config
-    Configuration pluginConfig;
+    CakeConfiguration pluginConfig;
 
     // Command Handler
     @Override
